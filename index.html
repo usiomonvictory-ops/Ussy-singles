@@ -719,7 +719,10 @@ function closeMatch() {
   document.getElementById("matchModal").classList.remove("show");
 }
 async function initializeApp() {
-  if (SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE") {
+  if (
+  !SUPABASE_PUBLISHABLE_KEY ||
+  SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE"
+) {
     showNotice("authNotice", "Setup needed: open this index.html file in your editor and replace the publishable-key placeholder with your Supabase sb_publishable_... key.", "error");
     return;
   }
