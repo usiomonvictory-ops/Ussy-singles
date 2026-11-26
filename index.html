@@ -1,1110 +1,751 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ussy Singles - Meet Someone Special</title>
-
+<meta name="theme-color" content="#7c3aed">
+<title>USSY SINGLES — Meet Someone Special</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-:root{
-  --purple:#7c3aed;
-  --pink:#ec4899;
-  --dark:#211631;
-  --muted:#777185;
-  --light:#f8f5ff;
-  --white:#ffffff;
-}
-
-body{
-  font-family:Arial,sans-serif;
-  background:#f7f4fc;
-  color:var(--dark);
-}
-
-button{
-  cursor:pointer;
-  border:none;
-  font-family:inherit;
-}
-
-header{
-  background:white;
-  padding:18px 7%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  z-index:10;
-  box-shadow:0 3px 15px rgba(0,0,0,.05);
-}
-
-.logo{
-  font-size:26px;
-  font-weight:900;
-  color:var(--purple);
-}
-
-.logo span{
-  color:var(--pink);
-}
-
-nav{
-  display:flex;
-  gap:25px;
-}
-
-nav button{
-  background:none;
-  font-size:15px;
-  color:#777;
-  font-weight:600;
-}
-
-nav button.active,
-nav button:hover{
-  color:var(--purple);
-}
-
-.hero{
-  max-width:1200px;
-  margin:35px auto;
-  padding:0 20px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-  align-items:center;
-}
-
-.hero-text h1{
-  font-size:clamp(35px,5vw,60px);
-  line-height:1.12;
-  margin-bottom:18px;
-}
-
-.hero-text h1 span{
-  color:var(--purple);
-}
-
-.hero-text p{
-  color:var(--muted);
-  font-size:17px;
-  line-height:1.8;
-  max-width:480px;
-}
-
-.hero-text button{
-  margin-top:25px;
-  padding:15px 30px;
-  background:linear-gradient(120deg,var(--pink),var(--purple));
-  color:white;
-  border-radius:30px;
-  font-weight:bold;
-  font-size:16px;
-}
-
-.hero-image{
-  height:350px;
-  border-radius:28px;
-  overflow:hidden;
-  position:relative;
-}
-
-.hero-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.hero-image::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(0deg,rgba(35,15,50,.5),transparent 55%);
-}
-
-.hero-image div{
-  position:absolute;
-  bottom:25px;
-  left:25px;
-  z-index:2;
-  color:white;
-  font-size:23px;
-  font-weight:bold;
-}
-
-.section{
-  max-width:1200px;
-  margin:25px auto;
-  padding:20px;
-}
-
-.section-heading{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:25px;
-}
-
-.section-heading h2{
-  font-size:26px;
-}
-
-.section-heading p{
-  color:var(--muted);
-  margin-top:7px;
-}
-
-.filters{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-
-.filters button{
-  padding:11px 18px;
-  border-radius:25px;
-  background:white;
-  color:var(--muted);
-  font-weight:bold;
-}
-
-.filters button.active{
-  background:var(--purple);
-  color:white;
-}
-
-.profiles{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:25px;
-}
-
-.profile-card{
-  background:white;
-  border-radius:24px;
-  overflow:hidden;
-  box-shadow:0 8px 25px rgba(60,30,100,.06);
-  transition:.3s;
-}
-
-.profile-card:hover{
-  transform:translateY(-5px);
-}
-
-.profile-image{
-  height:360px;
-  position:relative;
-  overflow:hidden;
-}
-
-.profile-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.profile-image .badge{
-  position:absolute;
-  top:15px;
-  left:15px;
-  background:white;
-  color:var(--purple);
-  padding:8px 13px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.profile-info{
-  padding:20px;
-}
-
-.profile-info h3{
-  font-size:22px;
-  margin-bottom:8px;
-}
-
-.profile-info p{
-  color:var(--muted);
-  line-height:1.6;
-  font-size:14px;
-}
-
-.interests{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:14px;
-}
-
-.interests span{
-  background:#f3edff;
-  color:var(--purple);
-  padding:7px 10px;
-  border-radius:15px;
-  font-size:12px;
-}
-
-.card-actions{
-  display:flex;
-  gap:12px;
-  margin-top:20px;
-}
-
-.card-actions button{
-  flex:1;
-  padding:14px;
-  border-radius:16px;
-  font-weight:bold;
-  font-size:15px;
-}
-
-.pass{
-  background:#f3f1f6;
-  color:#777;
-}
-
-.like{
-  background:linear-gradient(120deg,var(--pink),var(--purple));
-  color:white;
-}
-
-.like:hover,
-.hero-text button:hover{
-  opacity:.9;
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-.empty{
-  background:white;
-  padding:50px 20px;
-  text-align:center;
-  border-radius:20px;
-  color:var(--muted);
-}
-
-.empty h3{
-  color:var(--dark);
-  margin-bottom:10px;
-}
-
-.matches-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
-
-.match-card{
-  background:white;
-  padding:15px;
-  border-radius:20px;
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.match-card img{
-  width:80px;
-  height:80px;
-  object-fit:cover;
-  border-radius:50%;
-}
-
-.match-card h3{
-  margin-bottom:7px;
-}
-
-.match-card button{
-  margin-top:10px;
-  background:var(--purple);
-  color:white;
-  padding:9px 15px;
-  border-radius:20px;
-}
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(20,10,35,.6);
-  z-index:100;
-  justify-content:center;
-  align-items:center;
-  padding:15px;
-}
-
-.modal.show{
-  display:flex;
-}
-
-.modal-box{
-  background:white;
-  width:100%;
-  max-width:420px;
-  padding:30px;
-  border-radius:25px;
-  text-align:center;
-}
-
-.modal-box h2{
-  margin-bottom:15px;
-  color:var(--purple);
-}
-
-.modal-box p{
-  color:var(--muted);
-  line-height:1.7;
-}
-
-.modal-box button{
-  margin-top:20px;
-  background:linear-gradient(120deg,var(--pink),var(--purple));
-  color:white;
-  padding:13px 25px;
-  border-radius:25px;
-  font-weight:bold;
-}
-
-.chat-box{
-  background:white;
-  border-radius:22px;
-  max-width:650px;
-  margin:auto;
-  overflow:hidden;
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-.chat-header{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:20px;
-  border-bottom:1px solid #eee;
-}
-
-.chat-header img{
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  object-fit:cover;
-}
-
-.chat-header p{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:5px;
-}
-
-.messages{
-  height:300px;
-  overflow-y:auto;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.message{
-  padding:12px 15px;
-  border-radius:18px;
-  max-width:80%;
-  font-size:14px;
-  line-height:1.5;
-}
-
-.message.sent{
-  background:var(--purple);
-  color:white;
-  align-self:flex-end;
-}
-
-.message.received{
-  background:#f1ebff;
-  color:var(--dark);
-  align-self:flex-start;
-}
-
-.chat-input{
-  display:flex;
-  padding:15px;
-  gap:10px;
-  border-top:1px solid #eee;
-}
-
-.chat-input input{
-  flex:1;
-  border:1px solid #ddd;
-  padding:13px;
-  border-radius:25px;
-  outline:none;
-}
-
-.chat-input button{
-  background:var(--purple);
-  color:white;
-  padding:13px 20px;
-  border-radius:25px;
-}
-
-footer{
-  text-align:center;
-  padding:35px 20px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-footer strong{
-  color:var(--purple);
-}
-
-.toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#211631;
-  color:white;
-  padding:14px 22px;
-  border-radius:30px;
-  z-index:200;
-  display:none;
-}
-
-.toast.show{
-  display:block;
-}
-
-@media(max-width:850px){
-  .hero{
-    grid-template-columns:1fr;
-  }
-
-  .hero-image{
-    height:300px;
-  }
-
-  .profiles,
-  .matches-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  nav{
-    gap:12px;
-  }
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--purple:#7c3aed;--pink:#ec4899;--dark:#211631;--muted:#777185;--light:#f8f5ff;--white:#fff;--line:#eee8f6}
+body{font-family:Arial,sans-serif;background:#f7f4fc;color:var(--dark);min-height:100vh}
+button,input,textarea{font:inherit}button{cursor:pointer;border:0}
+header{background:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #0000000d}
+.logo{font-size:26px;font-weight:900;color:var(--purple);white-space:nowrap}.logo span{color:var(--pink)}
+nav{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+nav button{background:none;font-size:14px;color:#777;font-weight:700;padding:8px 2px}
+nav button.active,nav button:hover{color:var(--purple)}
+nav .logout{color:#c24170}
+.hero{max-width:1200px;margin:35px auto;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.hero-text h1{font-size:clamp(35px,5vw,60px);line-height:1.12;margin-bottom:18px}.hero-text h1 span{color:var(--purple)}
+.hero-text p{color:var(--muted);font-size:17px;line-height:1.8;max-width:480px}
+.primary{background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff;border-radius:28px;padding:13px 23px;font-weight:bold}
+.hero-text .primary{margin-top:25px;padding:15px 30px;font-size:16px}
+.hero-image{height:350px;border-radius:28px;overflow:hidden;position:relative}
+.hero-image img{width:100%;height:100%;object-fit:cover}
+.hero-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#230f3280,transparent 55%)}
+.hero-image div{position:absolute;bottom:25px;left:25px;z-index:2;color:#fff;font-size:23px;font-weight:bold}
+.section{max-width:1200px;margin:25px auto;padding:20px}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:25px}
+.section-heading h2{font-size:26px}.section-heading p{color:var(--muted);margin-top:7px;line-height:1.5}
+.page{display:none}.page.active{display:block}
+.profiles{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
+.profile-card{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 8px 25px #3c1e640f}
+.profile-image{height:340px;position:relative;overflow:hidden;background:#eee}
+.profile-image img{width:100%;height:100%;object-fit:cover}
+.profile-info{padding:20px}.profile-info h3{font-size:22px;margin-bottom:8px}
+.profile-info p{color:var(--muted);line-height:1.6;font-size:14px;overflow-wrap:anywhere}
+.interests{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.interests span{background:#f3edff;color:var(--purple);padding:7px 10px;border-radius:15px;font-size:12px}
+.card-actions{display:flex;gap:12px;margin-top:20px}
+.card-actions button{flex:1;padding:13px;border-radius:15px;font-weight:bold}
+.pass{background:#f3f1f6;color:#777}.like{background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff}
+.empty{background:#fff;padding:45px 20px;text-align:center;border-radius:20px;color:var(--muted);grid-column:1/-1}
+.empty h3{color:var(--dark);margin-bottom:10px}.empty p{line-height:1.6}
+.matches-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.match-card{background:#fff;padding:15px;border-radius:20px;display:flex;align-items:center;gap:15px;min-width:0}
+.match-card img{width:75px;height:75px;object-fit:cover;border-radius:50%;background:#eee}
+.match-card h3{margin-bottom:7px}.match-card p{color:#777;font-size:13px}
+.match-card button{margin-top:10px;background:var(--purple);color:#fff;padding:9px 15px;border-radius:20px}
+.panel{background:#fff;padding:25px;border-radius:22px;box-shadow:0 5px 20px #00000008}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.field label{font-weight:700;font-size:13px;color:#554a65}
+.field input,.field textarea{width:100%;border:1px solid #ded6e9;border-radius:12px;padding:13px;outline:none;background:#fff;color:var(--dark)}
+.field input:focus,.field textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px #7c3aed18}
+.field textarea{min-height:100px;resize:vertical}
+.help{font-size:12px;color:var(--muted);line-height:1.5}
+.auth-wrap{max-width:520px;margin:45px auto;padding:20px}
+.auth-card{background:#fff;padding:30px;border-radius:24px;box-shadow:0 10px 35px #3c1e6412}
+.auth-card h2{color:var(--purple);margin-bottom:9px}.auth-card>p{color:var(--muted);line-height:1.6;margin-bottom:22px}
+.auth-tabs{display:flex;gap:8px;margin-bottom:22px;background:#f5f0fc;padding:5px;border-radius:14px}
+.auth-tabs button{flex:1;padding:11px;border-radius:10px;background:transparent;font-weight:bold;color:var(--muted)}
+.auth-tabs button.active{background:#fff;color:var(--purple);box-shadow:0 2px 8px #0000000d}
+.notice{padding:12px 14px;border-radius:12px;background:#f3edff;color:#5b21b6;font-size:13px;line-height:1.55;margin:12px 0}
+.notice.error{background:#fff0f2;color:#b42345}.notice.success{background:#ecfdf3;color:#167344}
+.auth-hidden{display:none!important}
+.chat-box{background:#fff;border-radius:22px;max-width:760px;margin:auto;overflow:hidden;box-shadow:0 5px 20px #0000000d}
+.chat-header{display:flex;align-items:center;gap:15px;padding:18px;border-bottom:1px solid var(--line)}
+.chat-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#eee}
+.chat-header p{color:var(--muted);font-size:13px;margin-top:5px}
+.messages{height:340px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.message{padding:11px 15px;border-radius:18px;max-width:82%;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.message.sent{background:var(--purple);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.message.received{background:#f1ebff;color:var(--dark);align-self:flex-start;border-bottom-left-radius:5px}
+.message small{display:block;font-size:10px;opacity:.7;margin-top:5px}
+.chat-input{display:flex;padding:14px;gap:10px;border-top:1px solid var(--line)}
+.chat-input input{flex:1;min-width:0;border:1px solid #ddd;padding:13px;border-radius:25px;outline:none}
+.chat-tools{display:flex;gap:8px;flex-wrap:wrap;padding:0 15px 15px}
+.chat-tools button{background:#f5f0fc;color:#6b21a8;padding:9px 12px;border-radius:18px;font-size:12px;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:#140a2399;z-index:100;justify-content:center;align-items:center;padding:15px}
+.modal.show{display:flex}.modal-box{background:#fff;width:100%;max-width:440px;padding:28px;border-radius:25px}
+.modal-box h2{margin-bottom:12px;color:var(--purple)}.modal-box p{color:var(--muted);line-height:1.7}
+.modal-box .primary{margin-top:18px}
+.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#211631;color:#fff;padding:13px 20px;border-radius:30px;z-index:200;display:none;max-width:90%;text-align:center}
+.toast.show{display:block}
+footer{text-align:center;padding:35px 20px;color:var(--muted);font-size:14px}
+footer strong{color:var(--purple)}
+#appShell{display:none}#appShell.visible{display:block}
+#authShell{display:block}#authShell.hidden{display:none}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.hero-image{height:300px}.profiles,.matches-grid{grid-template-columns:repeat(2,1fr)}nav{gap:12px}}
 @media(max-width:550px){
-  header{
-    padding:15px;
-    flex-direction:column;
-    gap:15px;
-  }
-
-  nav{
-    width:100%;
-    justify-content:space-around;
-    gap:5px;
-  }
-
-  nav button{
-    font-size:13px;
-  }
-
-  .profiles,
-  .matches-grid{
-    grid-template-columns:1fr;
-  }
-
-  .profile-image{
-    height:400px;
-  }
-
-  .hero-text h1{
-    font-size:40px;
-  }
-
-  .hero{
-    margin:20px auto;
-    gap:25px;
-  }
-
-  .section-heading h2{
-    font-size:22px;
-  }
+ header{padding:14px;flex-direction:column;gap:12px}
+ nav{width:100%;justify-content:space-around;gap:4px}
+ nav button{font-size:12px}
+ .profiles,.matches-grid{grid-template-columns:1fr}
+ .profile-image{height:390px}
+ .hero-text h1{font-size:40px}
+ .hero{margin:20px auto;gap:25px}
+ .section-heading h2{font-size:22px}
+ .form-grid{grid-template-columns:1fr}
+ .auth-card{padding:22px}
 }
 </style>
 </head>
-
 <body>
 
 <header>
   <div class="logo">USSY <span>SINGLES</span> 💜</div>
-
-  <nav>
-    <button class="active" onclick="showPage('discover',this)">Discover</button>
-    <button onclick="showPage('likes',this)">Likes</button>
-    <button onclick="showPage('matches',this)">Matches</button>
-    <button onclick="showPage('chat',this)">Messages</button>
+  <nav id="mainNav" class="auth-hidden">
+    <button class="active" data-page="discover" onclick="showPage('discover',this)">Discover</button>
+    <button data-page="likes" onclick="showPage('likes',this)">Likes</button>
+    <button data-page="matches" onclick="showPage('matches',this)">Matches</button>
+    <button data-page="chat" onclick="showPage('chat',this)">Messages</button>
+    <button data-page="profile" onclick="showPage('profile',this)">My Profile</button>
+    <button class="logout" onclick="signOut()">Log out</button>
   </nav>
 </header>
 
 <section class="hero" id="hero">
   <div class="hero-text">
     <h1>Find someone<br>who feels like<br><span>home.</span></h1>
-
-    <p>
-      Meet amazing people, discover meaningful connections
-      and let love find its way. Your next beautiful story
-      could start right here.
-    </p>
-
-    <button onclick="document.getElementById('discovery').scrollIntoView({behavior:'smooth'})">
-      Start Discovering 💕
-    </button>
+    <p>Meet real people, discover meaningful connections and let love find its way. Your next beautiful story could start right here.</p>
+    <button class="primary" onclick="document.getElementById('authShell').scrollIntoView({behavior:'smooth'})">Join USSY SINGLES 💕</button>
   </div>
-
   <div class="hero-image">
-    <img
-      src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1000&q=85"
-      alt="Couple enjoying a moment together"
-    >
+    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1000&q=85" alt="Couple enjoying a moment together">
     <div>Real connections. Beautiful stories.</div>
   </div>
 </section>
 
-<main>
-
-<section class="page active section" id="discover">
-
-  <div class="section-heading" id="discovery">
-    <div>
-      <h2>Discover people ✨</h2>
-      <p>Someone out there might be waiting to meet you.</p>
+<section id="authShell" class="auth-wrap">
+  <div class="auth-card">
+    <h2>Welcome to USSY SINGLES 💜</h2>
+    <p>Create an account to meet real members. You must be at least 18 years old to join.</p>
+    <div class="auth-tabs">
+      <button id="signupTab" class="active" onclick="setAuthMode('signup')">Create account</button>
+      <button id="loginTab" onclick="setAuthMode('login')">Log in</button>
     </div>
+    <div id="authNotice" class="notice auth-hidden" role="status"></div>
+    <form id="authForm" onsubmit="handleAuthSubmit(event)">
+      <div id="signupFields">
+        <div class="field"><label for="fullName">Full name</label><input id="fullName" autocomplete="name" maxlength="80" placeholder="Your name" required></div>
+        <div class="field"><label for="dob">Date of birth</label><input id="dob" type="date" required></div>
+        <p class="help">Your date of birth is used for the 18+ eligibility check and is not shown on your public profile.</p>
+      </div>
+      <div class="field"><label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></div>
+      <div class="field"><label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required></div>
+      <button id="authSubmit" class="primary" type="submit" style="width:100%">Create account</button>
+    </form>
+    <p class="help" style="margin-top:16px">By joining, you confirm that you are 18 or older and agree to use the platform respectfully. Email confirmation may be required before you can log in.</p>
   </div>
-
-  <div class="filters">
-    <button class="active" onclick="filterProfiles('all',this)">Everyone</button>
-    <button onclick="filterProfiles('romantic',this)">Romantic</button>
-    <button onclick="filterProfiles('adventure',this)">Adventure</button>
-    <button onclick="filterProfiles('creative',this)">Creative</button>
-  </div>
-
-  <div class="profiles" id="profiles"></div>
-
 </section>
 
-<section class="page section" id="likes">
+<div id="appShell">
+  <main>
+    <section class="page active section" id="discover">
+      <div class="section-heading"><div><h2>Discover people ✨</h2><p>Real members who have created a USSY SINGLES profile.</p></div></div>
+      <div id="profiles" class="profiles"></div>
+    </section>
 
-  <div class="section-heading">
-    <div>
-      <h2>People you liked 💗</h2>
-      <p>Your favourite profiles.</p>
-    </div>
-  </div>
+    <section class="page section" id="likes">
+      <div class="section-heading"><div><h2>People you liked 💗</h2><p>Your likes, saved securely to your account.</p></div></div>
+      <div id="likedProfiles" class="profiles"></div>
+    </section>
 
-  <div class="profiles" id="likedProfiles"></div>
+    <section class="page section" id="matches">
+      <div class="section-heading"><div><h2>Your matches 💞</h2><p>Only genuine mutual likes appear here.</p></div></div>
+      <div id="matchProfiles" class="matches-grid"></div>
+    </section>
 
-</section>
+    <section class="page section" id="chat">
+      <div class="section-heading"><div><h2>Messages 💌</h2><p>Private conversations with your matches.</p></div></div>
+      <div id="chatArea"></div>
+    </section>
 
-<section class="page section" id="matches">
-
-  <div class="section-heading">
-    <div>
-      <h2>Your matches 💞</h2>
-      <p>Connections waiting to blossom.</p>
-    </div>
-  </div>
-
-  <div class="matches-grid" id="matchProfiles"></div>
-
-</section>
-
-<section class="page section" id="chat">
-
-  <div class="section-heading">
-    <div>
-      <h2>Messages 💌</h2>
-      <p>Start a conversation.</p>
-    </div>
-  </div>
-
-  <div id="chatArea">
-    <div class="empty">
-      <h3>No conversations yet</h3>
-      <p>When you match with someone, you can start chatting here.</p>
-    </div>
-  </div>
-
-</section>
-
-</main>
+    <section class="page section" id="profile">
+      <div class="section-heading"><div><h2>Your profile 💜</h2><p>Tell other members a little about yourself.</p></div></div>
+      <div class="panel">
+        <div id="profileNotice" class="notice auth-hidden"></div>
+        <form id="profileForm" onsubmit="saveProfile(event)">
+          <div class="field"><label for="profileName">Full name</label><input id="profileName" maxlength="80" required></div>
+          <div class="field"><label for="profileBio">About you</label><textarea id="profileBio" maxlength="600" placeholder="Write a little about yourself..."></textarea></div>
+          <div class="form-grid">
+            <div class="field"><label for="profileLocation">City / location</label><input id="profileLocation" maxlength="100" placeholder="e.g. Lagos"></div>
+            <div class="field"><label for="profileInterests">Interests</label><input id="profileInterests" maxlength="250" placeholder="Music, travel, football"></div>
+          </div>
+          <div class="field"><label for="profilePhoto">Profile photo (JPG, PNG or WebP; max 5 MB)</label><input id="profilePhoto" type="file" accept="image/jpeg,image/png,image/webp"></div>
+          <p class="help" style="margin-bottom:15px">Your photo is stored in a private bucket. The app creates temporary signed image links for display.</p>
+          <button id="saveProfileButton" class="primary" type="submit">Save my profile</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
 
 <div class="modal" id="matchModal">
   <div class="modal-box">
     <h2>It's a match! 💘</h2>
-    <p id="matchText">You and someone liked each other.</p>
-    <button onclick="closeMatch()">Continue discovering</button>
+    <p id="matchText">You and this member liked each other.</p>
+    <button class="primary" onclick="closeMatch()">Lovely! Continue</button>
   </div>
 </div>
+<div class="toast" id="toast" role="status"></div>
 
-<div class="toast" id="toast"></div>
-
-<footer>
-  <strong>USSY SINGLES 💜</strong>
-  <p style="margin-top:10px">Meet. Connect. Fall in love.</p>
-  <p style="margin-top:10px">Made with ❤️</p>
-</footer>
+<footer><strong>USSY SINGLES 💜</strong><p style="margin-top:10px">Meet. Connect. Build something meaningful.</p><p style="margin-top:10px">Made with ❤️</p></footer>
 
 <script>
-const profilesData = [
-  {
-    id:1,
-    name:"Amara",
-    age:24,
-    location:"Lagos",
-    category:"romantic",
-    bio:"Soft-hearted, ambitious and always looking for the beauty in everyday life. I love good food and meaningful conversations.",
-    interests:["Music","Travel","Food"],
-    photo:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:2,
-    name:"David",
-    age:27,
-    location:"Abuja",
-    category:"adventure",
-    bio:"Football, road trips and exploring places I've never been. Looking for someone to make beautiful memories with.",
-    interests:["Football","Travel","Movies"],
-    photo:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:3,
-    name:"Tomi",
-    age:23,
-    location:"Ibadan",
-    category:"creative",
-    bio:"Creative soul. I love photography, art, fashion and peaceful evenings. Let's be each other's favourite people.",
-    interests:["Art","Fashion","Photography"],
-    photo:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:4,
-    name:"Michael",
-    age:26,
-    location:"Lagos",
-    category:"romantic",
-    bio:"Big on honesty, loyalty and laughter. I enjoy gym sessions, good music and building something meaningful.",
-    interests:["Fitness","Music","Business"],
-    photo:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:5,
-    name:"Zara",
-    age:25,
-    location:"Port Harcourt",
-    category:"adventure",
-    bio:"Nature lover, foodie and lover of spontaneous adventures. Life is too short not to enjoy it.",
-    interests:["Nature","Food","Adventure"],
-    photo:"https://images.unsplash.com/photo-1517841905240-472988bab4c?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:6,
-    name:"Daniel",
-    age:28,
-    location:"Lagos",
-    category:"creative",
-    bio:"Entrepreneur, tech enthusiast and a fan of good conversations. I value kindness, ambition and peace.",
-    interests:["Technology","Reading","Travel"],
-    photo:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:7,
-    name:"Nneka",
-    age:22,
-    location:"Enugu",
-    category:"romantic",
-    bio:"A lover of sunsets, poetry and all things beautiful. I believe the best relationships start with friendship.",
-    interests:["Poetry","Music","Movies"],
-    photo:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:8,
-    name:"Samuel",
-    age:25,
-    location:"Benin City",
-    category:"adventure",
-    bio:"Easy-going guy who loves football, exploring new places and making people smile.",
-    interests:["Football","Travel","Cooking"],
-    photo:"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=700&q=85"
-  },
-  {
-    id:9,
-    name:"Ada",
-    age:26,
-    location:"Lagos",
-    category:"creative",
-    bio:"Fashion, books and music make my world. Looking for someone who is intentional about love.",
-    interests:["Fashion","Books","Music"],
-    photo:"https://images.unsplash.com/photo-1529626455594-4ff0802cf6?auto=format&fit=crop&w=700&q=85"
+/*
+  USSY SINGLES — Supabase-connected frontend.
+  IMPORTANT: Replace the publishable-key placeholder below with your
+  Supabase sb_publishable_... key. Never put a service_role/secret key here.
+*/
+const SUPABASE_URL = "https://uyfiiddmzenbwyvmohay.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+let currentUser = null;
+let currentSession = null;
+let authMode = "signup";
+let currentChatMatch = null;
+let currentChatChannel = null;
+let signedImageCache = new Map();
+let skippedThisSession = new Set();
+let currentMatches = [];
+let currentProfiles = [];
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function showToast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => el.classList.remove("show"), 3000);
+}
+function showNotice(id, message, type="") {
+  const el = document.getElementById(id);
+  el.textContent = message;
+  el.className = "notice" + (type ? " " + type : "");
+}
+function hideNotice(id) {
+  const el = document.getElementById(id);
+  el.classList.add("auth-hidden");
+  el.textContent = "";
+}
+function setBusy(buttonId, busy, label) {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
+  button.disabled = busy;
+  button.textContent = busy ? "Please wait..." : label;
+}
+function validateAdult(dob) {
+  if (!dob) return false;
+  const birth = new Date(dob + "T00:00:00");
+  if (Number.isNaN(birth.getTime()) || birth > new Date()) return false;
+  const today = new Date();
+  const cutoff = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+  return birth <= cutoff && dob >= "1900-01-01";
+}
+function setAuthMode(mode) {
+  authMode = mode;
+  const signup = mode === "signup";
+  document.getElementById("signupFields").classList.toggle("auth-hidden", !signup);
+  document.getElementById("signupTab").classList.toggle("active", signup);
+  document.getElementById("loginTab").classList.toggle("active", !signup);
+  document.getElementById("authSubmit").textContent = signup ? "Create account" : "Log in";
+  document.getElementById("authPassword").autocomplete = signup ? "new-password" : "current-password";
+  hideNotice("authNotice");
+}
+async function handleAuthSubmit(event) {
+  event.preventDefault();
+  hideNotice("authNotice");
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  const buttonLabel = authMode === "signup" ? "Create account" : "Log in";
+  if (password.length < 8) {
+    showNotice("authNotice", "Please use a password with at least 8 characters.", "error");
+    return;
   }
-];
-
-let liked = JSON.parse(localStorage.getItem("ussyLiked") || "[]");
-let matched = JSON.parse(localStorage.getItem("ussyMatched") || "[]");
-let passed = JSON.parse(localStorage.getItem("ussyPassed") || "[]");
-let currentChatId = null;
-let currentFilter = "all";
-
-let chats = JSON.parse(localStorage.getItem("ussyChats") || "{}");
-
-function saveData(){
-  localStorage.setItem("ussyLiked",JSON.stringify(liked));
-  localStorage.setItem("ussyMatched",JSON.stringify(matched));
-  localStorage.setItem("ussyPassed",JSON.stringify(passed));
-  localStorage.setItem("ussyChats",JSON.stringify(chats));
+  setBusy("authSubmit", true, buttonLabel);
+  try {
+    if (authMode === "signup") {
+      const fullName = document.getElementById("fullName").value.trim();
+      const dob = document.getElementById("dob").value;
+      if (!fullName) throw new Error("Please enter your full name.");
+      if (!validateAdult(dob)) throw new Error("USSY SINGLES is for adults aged 18 and above. Please check your date of birth.");
+      const { data, error } = await supabaseClient.auth.signUp({
+        email, password,
+        options: {
+          data: { full_name: fullName, dob },
+          emailRedirectTo: window.location.origin + window.location.pathname
+        }
+      });
+      if (error) throw error;
+      if (data.session) {
+        currentSession = data.session;
+        currentUser = data.user;
+        await enterApp();
+      } else {
+        setAuthMode("login");
+        showNotice("authNotice", "Your account registration was submitted. Check your email and click the confirmation link before logging in. If the email does not arrive, check your spam folder.", "success");
+      }
+    } else {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      currentSession = data.session;
+      currentUser = data.user;
+      await enterApp();
+    }
+  } catch (error) {
+    showNotice("authNotice", error.message || "Something went wrong. Please try again.", "error");
+  } finally {
+    setBusy("authSubmit", false, buttonLabel);
+  }
 }
-
-function getProfile(id){
-  return profilesData.find(p=>p.id===id);
+async function signOut() {
+  if (currentChatChannel) {
+    await supabaseClient.removeChannel(currentChatChannel);
+    currentChatChannel = null;
+  }
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) showToast(error.message);
+  currentUser = null;
+  currentSession = null;
+  currentProfiles = [];
+  currentMatches = [];
+  signedImageCache.clear();
+  document.getElementById("appShell").classList.remove("visible");
+  document.getElementById("authShell").classList.remove("hidden");
+  document.getElementById("mainNav").classList.add("auth-hidden");
+  document.getElementById("hero").style.display = "grid";
+  showToast("You have been logged out.");
 }
-
-function showPage(page,btn){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(page).classList.add("active");
-
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-
-  if(btn) btn.classList.add("active");
-
-  document.getElementById("hero").style.display =
-    page==="discover" ? "grid" : "none";
-
-  if(page==="likes") renderLikes();
-  if(page==="matches") renderMatches();
-  if(page==="chat") renderChats();
-
+async function enterApp() {
+  document.getElementById("authShell").classList.add("hidden");
+  document.getElementById("appShell").classList.add("visible");
+  document.getElementById("mainNav").classList.remove("auth-hidden");
+  document.getElementById("hero").style.display = "none";
+  await loadMyProfile();
+  await Promise.all([loadDiscovery(), loadLikes(), loadMatches()]);
+  showPage("discover", document.querySelector('[data-page="discover"]'));
+}
+function showPage(page, button) {
+  document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+  const target = document.getElementById(page);
+  if (target) target.classList.add("active");
+  document.querySelectorAll("#mainNav button[data-page]").forEach(el => el.classList.remove("active"));
+  if (button) button.classList.add("active");
+  document.getElementById("hero").style.display = "none";
+  if (page === "discover") loadDiscovery();
+  if (page === "likes") loadLikes();
+  if (page === "matches") loadMatches();
+  if (page === "chat") renderChatList();
+  if (page === "profile") loadMyProfile();
   window.scrollTo({top:0,behavior:"smooth"});
 }
-
-function filterProfiles(category,btn){
-  currentFilter=category;
-
-  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-
-  renderProfiles();
+async function signedPhoto(path) {
+  if (!path) return "";
+  if (signedImageCache.has(path)) return signedImageCache.get(path);
+  const { data, error } = await supabaseClient.storage.from("ussy-photos").createSignedUrl(path, 3600);
+  if (error) {
+    console.warn("Could not create signed photo URL:", error.message);
+    return "";
+  }
+  signedImageCache.set(path, data.signedUrl);
+  return data.signedUrl;
 }
-
-function renderProfiles(){
-  const container=document.getElementById("profiles");
-
-  const filtered=profilesData.filter(p=>{
-    return !liked.includes(p.id) &&
-      !passed.includes(p.id) &&
-      (currentFilter==="all" || p.category===currentFilter);
-  });
-
-  if(filtered.length===0){
-    container.innerHTML=`
-      <div class="empty" style="grid-column:1/-1">
-        <h3>You've seen everyone! 💜</h3>
-        <p>You've explored all profiles in this category.</p>
-        <button onclick="resetDiscovery()" style="margin-top:15px;padding:12px 20px;border-radius:25px;background:#7c3aed;color:white">Explore again</button>
+async function getProfilesByIds(ids) {
+  const unique = [...new Set((ids || []).filter(id => id && id !== currentUser.id))];
+  if (!unique.length) return [];
+  const { data, error } = await supabaseClient.from("public_profiles").select("id,full_name,bio,location,interests,photo_path,created_at").in("id", unique);
+  if (error) throw error;
+  return data || [];
+}
+function emptyHTML(title, message) {
+  return `<div class="empty"><h3>${escapeHTML(title)}</h3><p>${escapeHTML(message)}</p></div>`;
+}
+async function profileCard(profile, mode="discover") {
+  const photo = await signedPhoto(profile.photo_path);
+  const name = escapeHTML(profile.full_name || "USSY member");
+  const location = escapeHTML(profile.location || "Location not added");
+  const bio = escapeHTML(profile.bio || "This member hasn't added a bio yet.");
+  const interests = Array.isArray(profile.interests) ? profile.interests : [];
+  const image = photo
+    ? `<img src="${photo}" alt="${name}" loading="lazy">`
+    : `<div style="height:100%;display:grid;place-items:center;color:#8b70b5">💜 Photo not added</div>`;
+  const chips = interests.map(item => `<span>${escapeHTML(item)}</span>`).join("");
+  let actions = "";
+  if (mode === "discover") {
+    actions = `<div class="card-actions"><button class="pass" onclick="skipProfile('${profile.id}')">Skip</button><button class="like" onclick="likeProfile('${profile.id}')">💗 Like</button></div>`;
+  } else if (mode === "liked") {
+    actions = `<div class="card-actions"><button class="pass" onclick="removeLike('${profile.id}')">Remove like</button></div>`;
+  }
+  return `<article class="profile-card">
+    <div class="profile-image">${image}</div>
+    <div class="profile-info"><h3>${name}</h3><p>📍 ${location}</p><p style="margin-top:12px">${bio}</p>
+    ${chips ? `<div class="interests">${chips}</div>` : ""}
+    ${actions}</div></article>`;
+}
+async function loadDiscovery() {
+  if (!currentUser) return;
+  const container = document.getElementById("profiles");
+  container.innerHTML = emptyHTML("Loading members…", "Finding real USSY SINGLES members.");
+  try {
+    const { data, error } = await supabaseClient.from("public_profiles")
+      .select("id,full_name,bio,location,interests,photo_path,created_at")
+      .neq("id", currentUser.id)
+      .order("created_at", { ascending: false })
+      .limit(60);
+    if (error) throw error;
+    currentProfiles = (data || []).filter(p => !skippedThisSession.has(p.id));
+    if (!currentProfiles.length) {
+      container.innerHTML = emptyHTML("No profiles to show yet 💜", "There are no other eligible profiles available right now. Invite real people to join, or check back later.");
+      return;
+    }
+    container.innerHTML = (await Promise.all(currentProfiles.map(p => profileCard(p)))).join("");
+  } catch (error) {
+    container.innerHTML = emptyHTML("Couldn't load profiles", error.message);
+  }
+}
+function skipProfile(id) {
+  skippedThisSession.add(id);
+  loadDiscovery();
+}
+async function likeProfile(receiverId) {
+  if (!currentUser || receiverId === currentUser.id) return;
+  try {
+    const { error } = await supabaseClient.from("likes").insert({
+      sender_id: currentUser.id,
+      receiver_id: receiverId
+    });
+    if (error && error.code !== "23505") throw error;
+    skippedThisSession.add(receiverId);
+    showToast(error ? "You've already liked this member." : "Like sent 💗");
+    await Promise.all([loadDiscovery(), loadLikes(), loadMatches()]);
+    if (!error) {
+      const { data: matchRows, error: matchError } = await supabaseClient.from("matches")
+        .select("id,user_one,user_two")
+        .or(`and(user_one.eq.${currentUser.id},user_two.eq.${receiverId}),and(user_one.eq.${receiverId},user_two.eq.${currentUser.id})`);
+      if (matchError) throw matchError;
+      if (matchRows && matchRows.length) {
+        const person = currentProfiles.find(p => p.id === receiverId) || (await getProfilesByIds([receiverId]))[0];
+        document.getElementById("matchText").textContent = `You and ${person?.full_name || "this member"} liked each other. Your match is real — say hello!`;
+        document.getElementById("matchModal").classList.add("show");
+      }
+    }
+  } catch (error) {
+    showToast("Couldn't send like: " + error.message);
+  }
+}
+async function loadLikes() {
+  if (!currentUser) return;
+  const container = document.getElementById("likedProfiles");
+  container.innerHTML = emptyHTML("Loading your likes…", "Please wait.");
+  try {
+    const { data, error } = await supabaseClient.from("likes").select("receiver_id,created_at")
+      .eq("sender_id", currentUser.id).order("created_at", {ascending:false});
+    if (error) throw error;
+    const profiles = await getProfilesByIds((data || []).map(row => row.receiver_id));
+    if (!profiles.length) {
+      container.innerHTML = emptyHTML("No likes yet 💗", "Explore real member profiles and tap Like when someone interests you.");
+      return;
+    }
+    container.innerHTML = (await Promise.all(profiles.map(p => profileCard(p, "liked")))).join("");
+  } catch (error) {
+    container.innerHTML = emptyHTML("Couldn't load likes", error.message);
+  }
+}
+async function removeLike(receiverId) {
+  try {
+    const { error } = await supabaseClient.from("likes").delete()
+      .eq("sender_id", currentUser.id).eq("receiver_id", receiverId);
+    if (error) throw error;
+    showToast("Like removed.");
+    await Promise.all([loadLikes(), loadDiscovery()]);
+  } catch (error) {
+    showToast("Couldn't remove like: " + error.message);
+  }
+}
+async function loadMatches() {
+  if (!currentUser) return;
+  const container = document.getElementById("matchProfiles");
+  container.innerHTML = emptyHTML("Loading matches…", "Please wait.");
+  try {
+    const { data, error } = await supabaseClient.from("matches").select("id,user_one,user_two,created_at")
+      .or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`)
+      .order("created_at", {ascending:false});
+    if (error) throw error;
+    currentMatches = data || [];
+    const otherIds = currentMatches.map(m => m.user_one === currentUser.id ? m.user_two : m.user_one);
+    const profiles = await getProfilesByIds(otherIds);
+    if (!currentMatches.length || !profiles.length) {
+      container.innerHTML = emptyHTML("No matches yet 💞", "When another member likes you back, your mutual match will appear here.");
+      return;
+    }
+    const byId = new Map(profiles.map(p => [p.id,p]));
+    container.innerHTML = await Promise.all(currentMatches.map(async match => {
+      const otherId = match.user_one === currentUser.id ? match.user_two : match.user_one;
+      const person = byId.get(otherId);
+      if (!person) return "";
+      const photo = await signedPhoto(person.photo_path);
+      return `<div class="match-card">
+        ${photo ? `<img src="${photo}" alt="${escapeHTML(person.full_name)}">` : `<div style="width:75px;height:75px;border-radius:50%;background:#f3edff;display:grid;place-items:center">💜</div>`}
+        <div style="min-width:0"><h3>${escapeHTML(person.full_name || "USSY member")}</h3><p>${escapeHTML(person.location || "Location not added")}</p>
+        <button onclick="openConversation('${match.id}','${otherId}')">Chat 💌</button></div></div>`;
+    })).then(cards => cards.join(""));
+  } catch (error) {
+    container.innerHTML = emptyHTML("Couldn't load matches", error.message);
+  }
+}
+async function renderChatList() {
+  if (!currentUser) return;
+  const container = document.getElementById("chatArea");
+  if (currentChatMatch) return loadConversation(currentChatMatch.matchId, currentChatMatch.otherId);
+  container.innerHTML = emptyHTML("Loading conversations…", "Please wait.");
+  try {
+    const { data, error } = await supabaseClient.from("matches").select("id,user_one,user_two,created_at")
+      .or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`)
+      .order("created_at", {ascending:false});
+    if (error) throw error;
+    if (!data || !data.length) {
+      container.innerHTML = emptyHTML("No conversations yet 💌", "A conversation becomes available after a genuine mutual match.");
+      return;
+    }
+    const profiles = await getProfilesByIds(data.map(m => m.user_one === currentUser.id ? m.user_two : m.user_one));
+    const byId = new Map(profiles.map(p => [p.id,p]));
+    const cards = await Promise.all(data.map(async match => {
+      const otherId = match.user_one === currentUser.id ? match.user_two : match.user_one;
+      const person = byId.get(otherId);
+      if (!person) return "";
+      const photo = await signedPhoto(person.photo_path);
+      return `<div class="match-card" style="margin-bottom:14px">
+        ${photo ? `<img src="${photo}" alt="${escapeHTML(person.full_name)}">` : `<div style="width:75px;height:75px;border-radius:50%;background:#f3edff;display:grid;place-items:center">💜</div>`}
+        <div><h3>${escapeHTML(person.full_name || "USSY member")}</h3><p>Your mutual match</p><button onclick="openConversation('${match.id}','${otherId}')">Open conversation</button></div>
       </div>`;
-    return;
+    }));
+    container.innerHTML = cards.join("") || emptyHTML("No conversations yet", "Your matches will appear here.");
+  } catch (error) {
+    container.innerHTML = emptyHTML("Couldn't load conversations", error.message);
   }
-
-  container.innerHTML=filtered.map(p=>`
-    <div class="profile-card">
-
-      <div class="profile-image">
-        <img src="${p.photo}" alt="${p.name}" loading="lazy">
-        <div class="badge">✨ Available</div>
+}
+async function openConversation(matchId, otherId) {
+  currentChatMatch = {matchId, otherId};
+  await loadConversation(matchId, otherId);
+}
+async function loadConversation(matchId, otherId) {
+  const container = document.getElementById("chatArea");
+  try {
+    const person = (await getProfilesByIds([otherId]))[0];
+    if (!person) throw new Error("This member's profile is unavailable. The match may have ended.");
+    const photo = await signedPhoto(person.photo_path);
+    const { data: messages, error } = await supabaseClient.from("messages").select("id,sender_id,content,created_at")
+      .eq("match_id", matchId).order("created_at", {ascending:true}).limit(200);
+    if (error) throw error;
+    container.innerHTML = `<div class="chat-box">
+      <div class="chat-header">
+        ${photo ? `<img src="${photo}" alt="${escapeHTML(person.full_name)}">` : `<div style="width:52px;height:52px;border-radius:50%;background:#f3edff;display:grid;place-items:center">💜</div>`}
+        <div style="flex:1"><h3>${escapeHTML(person.full_name || "USSY member")}</h3><p>Your private USSY SINGLES match</p></div>
       </div>
-
-      <div class="profile-info">
-
-        <h3>${p.name}, ${p.age}</h3>
-
-        <p>📍 ${p.location}</p>
-
-        <p style="margin-top:12px">${p.bio}</p>
-
-        <div class="interests">
-          ${p.interests.map(i=>`<span>${i}</span>`).join("")}
-        </div>
-
-        <div class="card-actions">
-          <button class="pass" onclick="passProfile(${p.id})">✕ Pass</button>
-          <button class="like" onclick="likeProfile(${p.id})">💗 Like</button>
-        </div>
-
+      <div class="messages" id="messages">${(messages || []).map(messageHTML).join("") || `<p style="color:#888;text-align:center">Say hello and start the conversation 💜</p>`}</div>
+      <form class="chat-input" onsubmit="sendMessage(event)">
+        <input id="chatMessageInput" maxlength="3000" placeholder="Write a message..." autocomplete="off" required>
+        <button class="primary" type="submit">Send</button>
+      </form>
+      <div class="chat-tools">
+        <button onclick="backToChatList()">← All conversations</button>
+        <button onclick="reportMember('${otherId}')">Report member</button>
+        <button onclick="blockMember('${otherId}')">Block member</button>
       </div>
-    </div>
-  `).join("");
-}
-
-function likeProfile(id){
-  if(!liked.includes(id)){
-    liked.push(id);
-  }
-
-  // Demo matching: sample profiles may reciprocate.
-  // This is not an actual user-to-user matching service.
-  const demoMutual=[1,4,7];
-
-  if(demoMutual.includes(id) && !matched.includes(id)){
-    matched.push(id);
-    saveData();
-    renderProfiles();
-    renderLikes();
-    renderMatches();
-
-    const person=getProfile(id);
-    document.getElementById("matchText").innerText=
-      `You and ${person.name} have liked each other. Start a conversation and see where it goes!`;
-
-    document.getElementById("matchModal").classList.add("show");
-  }else{
-    saveData();
-    renderProfiles();
-    renderLikes();
-    showToast("You liked this profile 💗");
+    </div>`;
+    const messageBox = document.getElementById("messages");
+    messageBox.scrollTop = messageBox.scrollHeight;
+    if (currentChatChannel) await supabaseClient.removeChannel(currentChatChannel);
+    currentChatChannel = supabaseClient.channel("ussy-match-" + matchId)
+      .on("postgres_changes", {event:"INSERT",schema:"public",table:"messages",filter:"match_id=eq." + matchId}, payload => {
+        if (payload.new.sender_id !== currentUser.id) {
+          const box = document.getElementById("messages");
+          if (box) {
+            const placeholder = box.querySelector("p");
+            if (placeholder) placeholder.remove();
+            box.insertAdjacentHTML("beforeend", messageHTML(payload.new));
+            box.scrollTop = box.scrollHeight;
+          }
+        }
+      }).subscribe();
+  } catch (error) {
+    container.innerHTML = emptyHTML("Conversation unavailable", error.message);
   }
 }
-
-function passProfile(id){
-  if(!passed.includes(id)){
-    passed.push(id);
-  }
-
-  saveData();
-  renderProfiles();
-  showToast("Profile skipped");
+function messageHTML(message) {
+  const sent = message.sender_id === currentUser.id;
+  const time = message.created_at ? new Date(message.created_at).toLocaleString() : "";
+  return `<div class="message ${sent ? "sent" : "received"}">${escapeHTML(message.content)}<small>${escapeHTML(time)}</small></div>`;
 }
-
-function closeMatch(){
+async function sendMessage(event) {
+  event.preventDefault();
+  const input = document.getElementById("chatMessageInput");
+  const content = input?.value.trim();
+  if (!content || !currentChatMatch) return;
+  if (content.length > 3000) return showToast("Messages must be 3,000 characters or fewer.");
+  input.disabled = true;
+  try {
+    const { error } = await supabaseClient.from("messages").insert({
+      match_id: currentChatMatch.matchId,
+      sender_id: currentUser.id,
+      content
+    });
+    if (error) throw error;
+    input.value = "";
+    await loadConversation(currentChatMatch.matchId, currentChatMatch.otherId);
+  } catch (error) {
+    showToast("Message not sent: " + error.message);
+  } finally {
+    const nextInput = document.getElementById("chatMessageInput");
+    if (nextInput) nextInput.disabled = false;
+  }
+}
+async function backToChatList() {
+  currentChatMatch = null;
+  if (currentChatChannel) {
+    await supabaseClient.removeChannel(currentChatChannel);
+    currentChatChannel = null;
+  }
+  await renderChatList();
+}
+async function blockMember(otherId) {
+  if (!confirm("Block this member? Blocking ends the match, removes both likes and prevents further chat. The existing conversation is preserved privately for safety purposes and will no longer be visible to either member.")) return;
+  try {
+    const { error } = await supabaseClient.from("blocks").insert({blocker_id:currentUser.id,blocked_id:otherId});
+    if (error && error.code !== "23505") throw error;
+    currentChatMatch = null;
+    if (currentChatChannel) {
+      await supabaseClient.removeChannel(currentChatChannel);
+      currentChatChannel = null;
+    }
+    showToast("Member blocked. The match has ended.");
+    await Promise.all([loadMatches(),loadLikes(),loadDiscovery()]);
+    await renderChatList();
+  } catch (error) {
+    showToast("Couldn't block member: " + error.message);
+  }
+}
+async function reportMember(otherId) {
+  const reason = prompt("Why are you reporting this member? Enter a short reason (for example: harassment, fake profile, scam, inappropriate content).");
+  if (!reason || !reason.trim()) return;
+  const details = prompt("Optional: add details about what happened. Do not include passwords or financial information.") || "";
+  try {
+    const { error } = await supabaseClient.from("reports").insert({
+      reporter_id:currentUser.id,
+      reported_id:otherId,
+      reason:reason.trim().slice(0,120),
+      details:details.trim().slice(0,2000)
+    });
+    if (error) throw error;
+    showToast("Report submitted. Thank you for helping keep the community safer.");
+  } catch (error) {
+    showToast("Couldn't submit report: " + error.message);
+  }
+}
+async function loadMyProfile() {
+  if (!currentUser) return;
+  try {
+    const { data, error } = await supabaseClient.from("profiles")
+      .select("id,full_name,bio,location,interests,photo_path")
+      .eq("id",currentUser.id).single();
+    if (error) throw error;
+    document.getElementById("profileName").value = data.full_name || "";
+    document.getElementById("profileBio").value = data.bio || "";
+    document.getElementById("profileLocation").value = data.location || "";
+    document.getElementById("profileInterests").value = Array.isArray(data.interests) ? data.interests.join(", ") : "";
+    hideNotice("profileNotice");
+  } catch (error) {
+    showNotice("profileNotice", "Couldn't load your profile: " + error.message, "error");
+  }
+}
+async function saveProfile(event) {
+  event.preventDefault();
+  if (!currentUser) return;
+  const button = document.getElementById("saveProfileButton");
+  button.disabled = true;
+  button.textContent = "Saving…";
+  try {
+    const fullName = document.getElementById("profileName").value.trim();
+    const bio = document.getElementById("profileBio").value.trim();
+    const location = document.getElementById("profileLocation").value.trim();
+    const interests = document.getElementById("profileInterests").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,20);
+    if (!fullName) throw new Error("Please add your name.");
+    const file = document.getElementById("profilePhoto").files[0];
+    let photoPath;
+    if (file) {
+      const allowed = ["image/jpeg","image/png","image/webp"];
+      if (!allowed.includes(file.type)) throw new Error("Please choose a JPG, PNG or WebP image.");
+      if (file.size > 5 * 1024 * 1024) throw new Error("Your photo must be 5 MB or smaller.");
+      const extension = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
+      photoPath = currentUser.id + "/" + crypto.randomUUID() + "." + extension;
+      const { error:uploadError } = await supabaseClient.storage.from("ussy-photos").upload(photoPath,file,{contentType:file.type,upsert:false});
+      if (uploadError) throw uploadError;
+    }
+    const update = {full_name:fullName,bio,location,interests,updated_at:new Date().toISOString()};
+    if (photoPath) update.photo_path = photoPath;
+    const { error } = await supabaseClient.from("profiles").update(update).eq("id",currentUser.id);
+    if (error) throw error;
+    signedImageCache.clear();
+    showNotice("profileNotice", "Your profile has been saved. Other members can now discover the details you've shared.", "success");
+    document.getElementById("profilePhoto").value = "";
+    await loadDiscovery();
+  } catch (error) {
+    showNotice("profileNotice", "Couldn't save your profile: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Save my profile";
+  }
+}
+function closeMatch() {
   document.getElementById("matchModal").classList.remove("show");
 }
-
-function renderLikes(){
-  const container=document.getElementById("likedProfiles");
-  const data=profilesData.filter(p=>liked.includes(p.id));
-
-  if(data.length===0){
-    container.innerHTML=`
-      <div class="empty" style="grid-column:1/-1">
-        <h3>No likes yet 💗</h3>
-        <p>Explore profiles and tap the heart to save people you like.</p>
-      </div>`;
+async function initializeApp() {
+  if (SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE") {
+    showNotice("authNotice", "Setup needed: open this index.html file in your editor and replace the publishable-key placeholder with your Supabase sb_publishable_... key.", "error");
     return;
   }
-
-  container.innerHTML=data.map(p=>`
-    <div class="profile-card">
-      <div class="profile-image">
-        <img src="${p.photo}" alt="${p.name}" loading="lazy">
-      </div>
-      <div class="profile-info">
-        <h3>${p.name}, ${p.age}</h3>
-        <p>📍 ${p.location}</p>
-        <p style="margin-top:12px">${p.bio}</p>
-        <div class="card-actions">
-          <button class="pass" onclick="removeLike(${p.id})">Remove</button>
-          <button class="like" onclick="openChat(${p.id})">Message</button>
-        </div>
-      </div>
-    </div>
-  `).join("");
-}
-
-function removeLike(id){
-  liked=liked.filter(x=>x!==id);
-  saveData();
-  renderLikes();
-  renderProfiles();
-}
-
-function renderMatches(){
-  const container=document.getElementById("matchProfiles");
-  const data=profilesData.filter(p=>matched.includes(p.id));
-
-  if(data.length===0){
-    container.innerHTML=`
-      <div class="empty" style="grid-column:1/-1">
-        <h3>No matches yet 💞</h3>
-        <p>Keep exploring. Your next connection could be waiting.</p>
-      </div>`;
-    return;
+  try {
+    const {data:{session},error} = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    if (session) {
+      currentSession = session;
+      currentUser = session.user;
+      await enterApp();
+    }
+    supabaseClient.auth.onAuthStateChange(async (event,session) => {
+      if (event === "SIGNED_OUT") {
+        currentUser = null;
+        currentSession = null;
+        document.getElementById("appShell").classList.remove("visible");
+        document.getElementById("authShell").classList.remove("hidden");
+        document.getElementById("mainNav").classList.add("auth-hidden");
+        document.getElementById("hero").style.display = "grid";
+      }
+    });
+  } catch (error) {
+    showNotice("authNotice", "Supabase connection error: " + error.message, "error");
   }
-
-  container.innerHTML=data.map(p=>`
-    <div class="match-card">
-      <img src="${p.photo}" alt="${p.name}" loading="lazy">
-      <div>
-        <h3>${p.name}</h3>
-        <p style="color:#777">${p.location}</p>
-        <button onclick="openChat(${p.id})">Chat 💌</button>
-      </div>
-    </div>
-  `).join("");
 }
-
-function openChat(id){
-  if(!matched.includes(id)){
-    showToast("Demo messaging is available for matched profiles.");
-    return;
-  }
-
-  currentChatId=id;
-  renderChats();
-
-  showPage("chat",document.querySelectorAll("nav button")[3]);
-}
-
-function renderChats(){
-  const container=document.getElementById("chatArea");
-
-  const data=profilesData.filter(p=>matched.includes(p.id));
-
-  if(data.length===0){
-    container.innerHTML=`
-      <div class="empty">
-        <h3>No conversations yet</h3>
-        <p>When you match with someone, you can start chatting here.</p>
-      </div>`;
-    return;
-  }
-
-  if(!currentChatId){
-    container.innerHTML=data.map(p=>`
-      <div class="match-card" style="margin-bottom:15px">
-        <img src="${p.photo}" alt="${p.name}" loading="lazy">
-        <div>
-          <h3>${p.name}</h3>
-          <p style="color:#777">Your match</p>
-          <button onclick="openChat(${p.id})">Open conversation</button>
-        </div>
-      </div>
-    `).join("");
-    return;
-  }
-
-  const person=getProfile(currentChatId);
-
-  if(!chats[currentChatId]){
-    chats[currentChatId]=[];
-  }
-
-  container.innerHTML=`
-    <div class="chat-box">
-
-      <div class="chat-header">
-        <img src="${person.photo}" alt="${person.name}">
-        <div>
-          <h3>${person.name}</h3>
-          <p>Matched on Ussy Singles 💜</p>
-        </div>
-      </div>
-
-      <div class="messages" id="messages">
-        ${chats[currentChatId].map(m=>`
-          <div class="message ${m.sender}">
-            ${escapeHTML(m.text)}
-          </div>
-        `).join("")}
-      </div>
-
-      <div class="chat-input">
-        <input id="chatInput" placeholder="Write a message..." onkeydown="if(event.key==='Enter')sendMessage()">
-        <button onclick="sendMessage()">Send</button>
-      </div>
-
-      <div style="padding:0 15px 15px">
-        <button onclick="backToChats()" style="background:none;color:#7c3aed">← All conversations</button>
-      </div>
-
-    </div>
-  `;
-
-  const messages=document.getElementById("messages");
-  messages.scrollTop=messages.scrollHeight;
-}
-
-function backToChats(){
-  currentChatId=null;
-  renderChats();
-}
-
-function sendMessage(){
-  const input=document.getElementById("chatInput");
-
-  if(!input || !input.value.trim()) return;
-
-  const text=input.value.trim();
-
-  chats[currentChatId].push({
-    sender:"sent",
-    text:text
-  });
-
-  saveData();
-  renderChats();
-
-  // Simulated response. No other real user receives this.
-}
-
-function escapeHTML(text){
-  return text.replace(/[&<>"']/g,function(c){
-    return {
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    }[c];
-  });
-}
-
-function resetDiscovery(){
-  passed=[];
-  saveData();
-  renderProfiles();
-  showToast("Discovery refreshed ✨");
-}
-
-function showToast(text){
-  const toast=document.getElementById("toast");
-  toast.textContent=text;
-  toast.classList.add("show");
-
-  setTimeout(()=>{
-    toast.classList.remove("show");
-  },2200);
-}
-
-renderProfiles();
-renderLikes();
-renderMatches();
+initializeApp();
 </script>
-
 </body>
 </html>
