@@ -1,0 +1,1110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ussy Singles - Meet Someone Special</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --purple:#7c3aed;
+  --pink:#ec4899;
+  --dark:#211631;
+  --muted:#777185;
+  --light:#f8f5ff;
+  --white:#ffffff;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f7f4fc;
+  color:var(--dark);
+}
+
+button{
+  cursor:pointer;
+  border:none;
+  font-family:inherit;
+}
+
+header{
+  background:white;
+  padding:18px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:10;
+  box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.logo{
+  font-size:26px;
+  font-weight:900;
+  color:var(--purple);
+}
+
+.logo span{
+  color:var(--pink);
+}
+
+nav{
+  display:flex;
+  gap:25px;
+}
+
+nav button{
+  background:none;
+  font-size:15px;
+  color:#777;
+  font-weight:600;
+}
+
+nav button.active,
+nav button:hover{
+  color:var(--purple);
+}
+
+.hero{
+  max-width:1200px;
+  margin:35px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:center;
+}
+
+.hero-text h1{
+  font-size:clamp(35px,5vw,60px);
+  line-height:1.12;
+  margin-bottom:18px;
+}
+
+.hero-text h1 span{
+  color:var(--purple);
+}
+
+.hero-text p{
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.8;
+  max-width:480px;
+}
+
+.hero-text button{
+  margin-top:25px;
+  padding:15px 30px;
+  background:linear-gradient(120deg,var(--pink),var(--purple));
+  color:white;
+  border-radius:30px;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.hero-image{
+  height:350px;
+  border-radius:28px;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.hero-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(0deg,rgba(35,15,50,.5),transparent 55%);
+}
+
+.hero-image div{
+  position:absolute;
+  bottom:25px;
+  left:25px;
+  z-index:2;
+  color:white;
+  font-size:23px;
+  font-weight:bold;
+}
+
+.section{
+  max-width:1200px;
+  margin:25px auto;
+  padding:20px;
+}
+
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:25px;
+}
+
+.section-heading h2{
+  font-size:26px;
+}
+
+.section-heading p{
+  color:var(--muted);
+  margin-top:7px;
+}
+
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+
+.filters button{
+  padding:11px 18px;
+  border-radius:25px;
+  background:white;
+  color:var(--muted);
+  font-weight:bold;
+}
+
+.filters button.active{
+  background:var(--purple);
+  color:white;
+}
+
+.profiles{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.profile-card{
+  background:white;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(60,30,100,.06);
+  transition:.3s;
+}
+
+.profile-card:hover{
+  transform:translateY(-5px);
+}
+
+.profile-image{
+  height:360px;
+  position:relative;
+  overflow:hidden;
+}
+
+.profile-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-image .badge{
+  position:absolute;
+  top:15px;
+  left:15px;
+  background:white;
+  color:var(--purple);
+  padding:8px 13px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.profile-info{
+  padding:20px;
+}
+
+.profile-info h3{
+  font-size:22px;
+  margin-bottom:8px;
+}
+
+.profile-info p{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+}
+
+.interests{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+.interests span{
+  background:#f3edff;
+  color:var(--purple);
+  padding:7px 10px;
+  border-radius:15px;
+  font-size:12px;
+}
+
+.card-actions{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+}
+
+.card-actions button{
+  flex:1;
+  padding:14px;
+  border-radius:16px;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.pass{
+  background:#f3f1f6;
+  color:#777;
+}
+
+.like{
+  background:linear-gradient(120deg,var(--pink),var(--purple));
+  color:white;
+}
+
+.like:hover,
+.hero-text button:hover{
+  opacity:.9;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.empty{
+  background:white;
+  padding:50px 20px;
+  text-align:center;
+  border-radius:20px;
+  color:var(--muted);
+}
+
+.empty h3{
+  color:var(--dark);
+  margin-bottom:10px;
+}
+
+.matches-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.match-card{
+  background:white;
+  padding:15px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.match-card img{
+  width:80px;
+  height:80px;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+.match-card h3{
+  margin-bottom:7px;
+}
+
+.match-card button{
+  margin-top:10px;
+  background:var(--purple);
+  color:white;
+  padding:9px 15px;
+  border-radius:20px;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(20,10,35,.6);
+  z-index:100;
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:white;
+  width:100%;
+  max-width:420px;
+  padding:30px;
+  border-radius:25px;
+  text-align:center;
+}
+
+.modal-box h2{
+  margin-bottom:15px;
+  color:var(--purple);
+}
+
+.modal-box p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.modal-box button{
+  margin-top:20px;
+  background:linear-gradient(120deg,var(--pink),var(--purple));
+  color:white;
+  padding:13px 25px;
+  border-radius:25px;
+  font-weight:bold;
+}
+
+.chat-box{
+  background:white;
+  border-radius:22px;
+  max-width:650px;
+  margin:auto;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.chat-header{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:20px;
+  border-bottom:1px solid #eee;
+}
+
+.chat-header img{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.chat-header p{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+.messages{
+  height:300px;
+  overflow-y:auto;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.message{
+  padding:12px 15px;
+  border-radius:18px;
+  max-width:80%;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.message.sent{
+  background:var(--purple);
+  color:white;
+  align-self:flex-end;
+}
+
+.message.received{
+  background:#f1ebff;
+  color:var(--dark);
+  align-self:flex-start;
+}
+
+.chat-input{
+  display:flex;
+  padding:15px;
+  gap:10px;
+  border-top:1px solid #eee;
+}
+
+.chat-input input{
+  flex:1;
+  border:1px solid #ddd;
+  padding:13px;
+  border-radius:25px;
+  outline:none;
+}
+
+.chat-input button{
+  background:var(--purple);
+  color:white;
+  padding:13px 20px;
+  border-radius:25px;
+}
+
+footer{
+  text-align:center;
+  padding:35px 20px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+footer strong{
+  color:var(--purple);
+}
+
+.toast{
+  position:fixed;
+  bottom:25px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#211631;
+  color:white;
+  padding:14px 22px;
+  border-radius:30px;
+  z-index:200;
+  display:none;
+}
+
+.toast.show{
+  display:block;
+}
+
+@media(max-width:850px){
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .hero-image{
+    height:300px;
+  }
+
+  .profiles,
+  .matches-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  nav{
+    gap:12px;
+  }
+}
+
+@media(max-width:550px){
+  header{
+    padding:15px;
+    flex-direction:column;
+    gap:15px;
+  }
+
+  nav{
+    width:100%;
+    justify-content:space-around;
+    gap:5px;
+  }
+
+  nav button{
+    font-size:13px;
+  }
+
+  .profiles,
+  .matches-grid{
+    grid-template-columns:1fr;
+  }
+
+  .profile-image{
+    height:400px;
+  }
+
+  .hero-text h1{
+    font-size:40px;
+  }
+
+  .hero{
+    margin:20px auto;
+    gap:25px;
+  }
+
+  .section-heading h2{
+    font-size:22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">USSY <span>SINGLES</span> 💜</div>
+
+  <nav>
+    <button class="active" onclick="showPage('discover',this)">Discover</button>
+    <button onclick="showPage('likes',this)">Likes</button>
+    <button onclick="showPage('matches',this)">Matches</button>
+    <button onclick="showPage('chat',this)">Messages</button>
+  </nav>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-text">
+    <h1>Find someone<br>who feels like<br><span>home.</span></h1>
+
+    <p>
+      Meet amazing people, discover meaningful connections
+      and let love find its way. Your next beautiful story
+      could start right here.
+    </p>
+
+    <button onclick="document.getElementById('discovery').scrollIntoView({behavior:'smooth'})">
+      Start Discovering 💕
+    </button>
+  </div>
+
+  <div class="hero-image">
+    <img
+      src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1000&q=85"
+      alt="Couple enjoying a moment together"
+    >
+    <div>Real connections. Beautiful stories.</div>
+  </div>
+</section>
+
+<main>
+
+<section class="page active section" id="discover">
+
+  <div class="section-heading" id="discovery">
+    <div>
+      <h2>Discover people ✨</h2>
+      <p>Someone out there might be waiting to meet you.</p>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="active" onclick="filterProfiles('all',this)">Everyone</button>
+    <button onclick="filterProfiles('romantic',this)">Romantic</button>
+    <button onclick="filterProfiles('adventure',this)">Adventure</button>
+    <button onclick="filterProfiles('creative',this)">Creative</button>
+  </div>
+
+  <div class="profiles" id="profiles"></div>
+
+</section>
+
+<section class="page section" id="likes">
+
+  <div class="section-heading">
+    <div>
+      <h2>People you liked 💗</h2>
+      <p>Your favourite profiles.</p>
+    </div>
+  </div>
+
+  <div class="profiles" id="likedProfiles"></div>
+
+</section>
+
+<section class="page section" id="matches">
+
+  <div class="section-heading">
+    <div>
+      <h2>Your matches 💞</h2>
+      <p>Connections waiting to blossom.</p>
+    </div>
+  </div>
+
+  <div class="matches-grid" id="matchProfiles"></div>
+
+</section>
+
+<section class="page section" id="chat">
+
+  <div class="section-heading">
+    <div>
+      <h2>Messages 💌</h2>
+      <p>Start a conversation.</p>
+    </div>
+  </div>
+
+  <div id="chatArea">
+    <div class="empty">
+      <h3>No conversations yet</h3>
+      <p>When you match with someone, you can start chatting here.</p>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<div class="modal" id="matchModal">
+  <div class="modal-box">
+    <h2>It's a match! 💘</h2>
+    <p id="matchText">You and someone liked each other.</p>
+    <button onclick="closeMatch()">Continue discovering</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <strong>USSY SINGLES 💜</strong>
+  <p style="margin-top:10px">Meet. Connect. Fall in love.</p>
+  <p style="margin-top:10px">Made with ❤️</p>
+</footer>
+
+<script>
+const profilesData = [
+  {
+    id:1,
+    name:"Amara",
+    age:24,
+    location:"Lagos",
+    category:"romantic",
+    bio:"Soft-hearted, ambitious and always looking for the beauty in everyday life. I love good food and meaningful conversations.",
+    interests:["Music","Travel","Food"],
+    photo:"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:2,
+    name:"David",
+    age:27,
+    location:"Abuja",
+    category:"adventure",
+    bio:"Football, road trips and exploring places I've never been. Looking for someone to make beautiful memories with.",
+    interests:["Football","Travel","Movies"],
+    photo:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:3,
+    name:"Tomi",
+    age:23,
+    location:"Ibadan",
+    category:"creative",
+    bio:"Creative soul. I love photography, art, fashion and peaceful evenings. Let's be each other's favourite people.",
+    interests:["Art","Fashion","Photography"],
+    photo:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:4,
+    name:"Michael",
+    age:26,
+    location:"Lagos",
+    category:"romantic",
+    bio:"Big on honesty, loyalty and laughter. I enjoy gym sessions, good music and building something meaningful.",
+    interests:["Fitness","Music","Business"],
+    photo:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:5,
+    name:"Zara",
+    age:25,
+    location:"Port Harcourt",
+    category:"adventure",
+    bio:"Nature lover, foodie and lover of spontaneous adventures. Life is too short not to enjoy it.",
+    interests:["Nature","Food","Adventure"],
+    photo:"https://images.unsplash.com/photo-1517841905240-472988bab4c?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:6,
+    name:"Daniel",
+    age:28,
+    location:"Lagos",
+    category:"creative",
+    bio:"Entrepreneur, tech enthusiast and a fan of good conversations. I value kindness, ambition and peace.",
+    interests:["Technology","Reading","Travel"],
+    photo:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:7,
+    name:"Nneka",
+    age:22,
+    location:"Enugu",
+    category:"romantic",
+    bio:"A lover of sunsets, poetry and all things beautiful. I believe the best relationships start with friendship.",
+    interests:["Poetry","Music","Movies"],
+    photo:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:8,
+    name:"Samuel",
+    age:25,
+    location:"Benin City",
+    category:"adventure",
+    bio:"Easy-going guy who loves football, exploring new places and making people smile.",
+    interests:["Football","Travel","Cooking"],
+    photo:"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=700&q=85"
+  },
+  {
+    id:9,
+    name:"Ada",
+    age:26,
+    location:"Lagos",
+    category:"creative",
+    bio:"Fashion, books and music make my world. Looking for someone who is intentional about love.",
+    interests:["Fashion","Books","Music"],
+    photo:"https://images.unsplash.com/photo-1529626455594-4ff0802cf6?auto=format&fit=crop&w=700&q=85"
+  }
+];
+
+let liked = JSON.parse(localStorage.getItem("ussyLiked") || "[]");
+let matched = JSON.parse(localStorage.getItem("ussyMatched") || "[]");
+let passed = JSON.parse(localStorage.getItem("ussyPassed") || "[]");
+let currentChatId = null;
+let currentFilter = "all";
+
+let chats = JSON.parse(localStorage.getItem("ussyChats") || "{}");
+
+function saveData(){
+  localStorage.setItem("ussyLiked",JSON.stringify(liked));
+  localStorage.setItem("ussyMatched",JSON.stringify(matched));
+  localStorage.setItem("ussyPassed",JSON.stringify(passed));
+  localStorage.setItem("ussyChats",JSON.stringify(chats));
+}
+
+function getProfile(id){
+  return profilesData.find(p=>p.id===id);
+}
+
+function showPage(page,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+
+  if(btn) btn.classList.add("active");
+
+  document.getElementById("hero").style.display =
+    page==="discover" ? "grid" : "none";
+
+  if(page==="likes") renderLikes();
+  if(page==="matches") renderMatches();
+  if(page==="chat") renderChats();
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function filterProfiles(category,btn){
+  currentFilter=category;
+
+  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+
+  renderProfiles();
+}
+
+function renderProfiles(){
+  const container=document.getElementById("profiles");
+
+  const filtered=profilesData.filter(p=>{
+    return !liked.includes(p.id) &&
+      !passed.includes(p.id) &&
+      (currentFilter==="all" || p.category===currentFilter);
+  });
+
+  if(filtered.length===0){
+    container.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <h3>You've seen everyone! 💜</h3>
+        <p>You've explored all profiles in this category.</p>
+        <button onclick="resetDiscovery()" style="margin-top:15px;padding:12px 20px;border-radius:25px;background:#7c3aed;color:white">Explore again</button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML=filtered.map(p=>`
+    <div class="profile-card">
+
+      <div class="profile-image">
+        <img src="${p.photo}" alt="${p.name}" loading="lazy">
+        <div class="badge">✨ Available</div>
+      </div>
+
+      <div class="profile-info">
+
+        <h3>${p.name}, ${p.age}</h3>
+
+        <p>📍 ${p.location}</p>
+
+        <p style="margin-top:12px">${p.bio}</p>
+
+        <div class="interests">
+          ${p.interests.map(i=>`<span>${i}</span>`).join("")}
+        </div>
+
+        <div class="card-actions">
+          <button class="pass" onclick="passProfile(${p.id})">✕ Pass</button>
+          <button class="like" onclick="likeProfile(${p.id})">💗 Like</button>
+        </div>
+
+      </div>
+    </div>
+  `).join("");
+}
+
+function likeProfile(id){
+  if(!liked.includes(id)){
+    liked.push(id);
+  }
+
+  // Demo matching: sample profiles may reciprocate.
+  // This is not an actual user-to-user matching service.
+  const demoMutual=[1,4,7];
+
+  if(demoMutual.includes(id) && !matched.includes(id)){
+    matched.push(id);
+    saveData();
+    renderProfiles();
+    renderLikes();
+    renderMatches();
+
+    const person=getProfile(id);
+    document.getElementById("matchText").innerText=
+      `You and ${person.name} have liked each other. Start a conversation and see where it goes!`;
+
+    document.getElementById("matchModal").classList.add("show");
+  }else{
+    saveData();
+    renderProfiles();
+    renderLikes();
+    showToast("You liked this profile 💗");
+  }
+}
+
+function passProfile(id){
+  if(!passed.includes(id)){
+    passed.push(id);
+  }
+
+  saveData();
+  renderProfiles();
+  showToast("Profile skipped");
+}
+
+function closeMatch(){
+  document.getElementById("matchModal").classList.remove("show");
+}
+
+function renderLikes(){
+  const container=document.getElementById("likedProfiles");
+  const data=profilesData.filter(p=>liked.includes(p.id));
+
+  if(data.length===0){
+    container.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <h3>No likes yet 💗</h3>
+        <p>Explore profiles and tap the heart to save people you like.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML=data.map(p=>`
+    <div class="profile-card">
+      <div class="profile-image">
+        <img src="${p.photo}" alt="${p.name}" loading="lazy">
+      </div>
+      <div class="profile-info">
+        <h3>${p.name}, ${p.age}</h3>
+        <p>📍 ${p.location}</p>
+        <p style="margin-top:12px">${p.bio}</p>
+        <div class="card-actions">
+          <button class="pass" onclick="removeLike(${p.id})">Remove</button>
+          <button class="like" onclick="openChat(${p.id})">Message</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function removeLike(id){
+  liked=liked.filter(x=>x!==id);
+  saveData();
+  renderLikes();
+  renderProfiles();
+}
+
+function renderMatches(){
+  const container=document.getElementById("matchProfiles");
+  const data=profilesData.filter(p=>matched.includes(p.id));
+
+  if(data.length===0){
+    container.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <h3>No matches yet 💞</h3>
+        <p>Keep exploring. Your next connection could be waiting.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML=data.map(p=>`
+    <div class="match-card">
+      <img src="${p.photo}" alt="${p.name}" loading="lazy">
+      <div>
+        <h3>${p.name}</h3>
+        <p style="color:#777">${p.location}</p>
+        <button onclick="openChat(${p.id})">Chat 💌</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function openChat(id){
+  if(!matched.includes(id)){
+    showToast("Demo messaging is available for matched profiles.");
+    return;
+  }
+
+  currentChatId=id;
+  renderChats();
+
+  showPage("chat",document.querySelectorAll("nav button")[3]);
+}
+
+function renderChats(){
+  const container=document.getElementById("chatArea");
+
+  const data=profilesData.filter(p=>matched.includes(p.id));
+
+  if(data.length===0){
+    container.innerHTML=`
+      <div class="empty">
+        <h3>No conversations yet</h3>
+        <p>When you match with someone, you can start chatting here.</p>
+      </div>`;
+    return;
+  }
+
+  if(!currentChatId){
+    container.innerHTML=data.map(p=>`
+      <div class="match-card" style="margin-bottom:15px">
+        <img src="${p.photo}" alt="${p.name}" loading="lazy">
+        <div>
+          <h3>${p.name}</h3>
+          <p style="color:#777">Your match</p>
+          <button onclick="openChat(${p.id})">Open conversation</button>
+        </div>
+      </div>
+    `).join("");
+    return;
+  }
+
+  const person=getProfile(currentChatId);
+
+  if(!chats[currentChatId]){
+    chats[currentChatId]=[];
+  }
+
+  container.innerHTML=`
+    <div class="chat-box">
+
+      <div class="chat-header">
+        <img src="${person.photo}" alt="${person.name}">
+        <div>
+          <h3>${person.name}</h3>
+          <p>Matched on Ussy Singles 💜</p>
+        </div>
+      </div>
+
+      <div class="messages" id="messages">
+        ${chats[currentChatId].map(m=>`
+          <div class="message ${m.sender}">
+            ${escapeHTML(m.text)}
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="chat-input">
+        <input id="chatInput" placeholder="Write a message..." onkeydown="if(event.key==='Enter')sendMessage()">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+
+      <div style="padding:0 15px 15px">
+        <button onclick="backToChats()" style="background:none;color:#7c3aed">← All conversations</button>
+      </div>
+
+    </div>
+  `;
+
+  const messages=document.getElementById("messages");
+  messages.scrollTop=messages.scrollHeight;
+}
+
+function backToChats(){
+  currentChatId=null;
+  renderChats();
+}
+
+function sendMessage(){
+  const input=document.getElementById("chatInput");
+
+  if(!input || !input.value.trim()) return;
+
+  const text=input.value.trim();
+
+  chats[currentChatId].push({
+    sender:"sent",
+    text:text
+  });
+
+  saveData();
+  renderChats();
+
+  // Simulated response. No other real user receives this.
+}
+
+function escapeHTML(text){
+  return text.replace(/[&<>"']/g,function(c){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c];
+  });
+}
+
+function resetDiscovery(){
+  passed=[];
+  saveData();
+  renderProfiles();
+  showToast("Discovery refreshed ✨");
+}
+
+function showToast(text){
+  const toast=document.getElementById("toast");
+  toast.textContent=text;
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },2200);
+}
+
+renderProfiles();
+renderLikes();
+renderMatches();
+</script>
+
+</body>
+</html>
