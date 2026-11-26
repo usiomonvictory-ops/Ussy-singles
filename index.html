@@ -8,6 +8,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+ .auth-hidden {
+  display: none !important;
+}
 :root{--purple:#7c3aed;--pink:#ec4899;--dark:#211631;--muted:#777185;--light:#f8f5ff;--white:#fff;--line:#eee8f6}
 body{font-family:Arial,sans-serif;background:#f7f4fc;color:var(--dark);min-height:100vh}
 button,input,textarea{font:inherit}button{cursor:pointer;border:0}
@@ -64,11 +67,7 @@ nav .logout{color:#c24170}
 .auth-tabs button.active{background:#fff;color:var(--purple);box-shadow:0 2px 8px #0000000d}
 .notice{padding:12px 14px;border-radius:12px;background:#f3edff;color:#5b21b6;font-size:13px;line-height:1.55;margin:12px 0}
 .notice.error{background:#fff0f2;color:#b42345}.notice.success{background:#ecfdf3;color:#167344}
-.auth-hidden{display:none!important}
-.chat-box{background:#fff;border-radius:22px;max-width:760px;margin:auto;overflow:hidden;box-shadow:0 5px 20px #0000000d}
-.chat-header{display:flex;align-items:center;gap:15px;padding:18px;border-bottom:1px solid var(--line)}
-.chat-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#eee}
-.chat-header p{color:var(--muted);font-size:13px;margin-top:5px}
+.auth-hidden
 .messages{height:340px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
 .message{padding:11px 15px;border-radius:18px;max-width:82%;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
 .message.sent{background:var(--purple);color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
@@ -131,17 +130,88 @@ footer strong{color:var(--purple)}
 
 <section id="authShell" class="auth-wrap">
   <div class="auth-card">
-    <h2>Welcome to USSY SINGLES 💜</h2>
-    <p>Create an account to meet real members. You must be at least 18 years old to join.</p>
-    <div class="auth-tabs">
-      <button id="signupTab" class="active" onclick="setAuthMode('signup')">Create account</button>
-      <button id="loginTab" onclick="setAuthMode('login')">Log in</button>
-    </div>
-    <div id="authNotice" class="notice auth-hidden" role="status"></div>
-    <form id="authForm" onsubmit="handleAuthSubmit(event)">
-      <div id="signupFields">
-     c
 
+    <h2>Welcome to USSY SINGLES 💜</h2>
+
+    <p>Create an account to meet real members. You must be at least 18 years old to join.</p>
+
+    <div class="auth-tabs">
+      <button type="button" id="signupTab" class="active" onclick="setAuthMode('signup')">
+        Create account
+      </button>
+
+      <button type="button" id="loginTab" onclick="setAuthMode('login')">
+        Log in
+      </button>
+    </div>
+
+    <div id="authNotice" class="notice auth-hidden" role="status"></div>
+
+    <form id="authForm" onsubmit="handleAuthSubmit(event)">
+
+      <div id="signupFields">
+
+        <div style="margin-bottom:16px;">
+          <label for="fullName">Full name</label>
+          <input
+            type="text"
+            id="fullName"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+            style="width:100%;padding:13px;border:1px solid #e2d8ef;border-radius:12px;margin-top:7px;"
+          >
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label for="dob">Date of birth</label>
+          <input
+            type="date"
+            id="dob"
+            required
+            style="width:100%;padding:13px;border:1px solid #e2d8ef;border-radius:12px;margin-top:7px;"
+          >
+        </div>
+
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label for="authEmail">Email address</label>
+        <input
+          type="email"
+          id="authEmail"
+          placeholder="Enter your email address"
+          autocomplete="email"
+          required
+          style="width:100%;padding:13px;border:1px solid #e2d8ef;border-radius:12px;margin-top:7px;"
+        >
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label for="authPassword">Password</label>
+        <input
+          type="password"
+          id="authPassword"
+          placeholder="Enter your password"
+          minlength="8"
+          autocomplete="new-password"
+          required
+          style="width:100%;padding:13px;border:1px solid #e2d8ef;border-radius:12px;margin-top:7px;"
+        >
+      </div>
+
+      <button
+        type="submit"
+        id="authSubmit"
+        style="width:100%;padding:14px;background:#7c3aed;color:white;border:0;border-radius:12px;font-weight:bold;cursor:pointer;"
+      >
+        Create account
+      </button>
+
+    </form>
+
+  </div>
+</section>
 <div id="appShell">
   <main>
     <section class="page active section" id="discover">
