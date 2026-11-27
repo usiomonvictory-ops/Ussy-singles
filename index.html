@@ -658,7 +658,8 @@ function messageHTML(message) {
 }
 async function sendMessage(event) {
   event.preventDefault();
- showToast("Send button is working!");
+
+ alert("SEND BUTTON FUNCTION IS WORKING!");
   const input = document.getElementById("chatMessageInput");
   const content = input?.value.trim();
   if (!content || !currentChatMatch) return;
