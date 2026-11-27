@@ -604,6 +604,8 @@ async function renderChatList() {
   }
 }
 async function openConversation(matchId, otherId) {
+ alert("OPEN CONVERSATION IS WORKING!");
+ 
   currentChatMatch = {matchId, otherId};
   await loadConversation(matchId, otherId);
 }
