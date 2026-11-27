@@ -650,6 +650,7 @@ async function loadConversation(matchId, otherId) {
         }
       }).subscribe();
   } catch (error) {
+    alert("CHAT LOADING ERROR: " + error.message);
     container.innerHTML = emptyHTML("Conversation unavailable", error.message);
   }
 }
